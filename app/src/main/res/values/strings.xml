@@ -2,7 +2,7 @@
     <string name="app_name">Test Task Android Course</string>
     <string name="home">Home</string>
     <string name="history">History</string>
-    <string name="bin_hint">Введите BIN банковской карты</string>
+    <string name="bin_hint">Enter your bank card BIN</string>
     <string name="card_info">Card info</string>
     <string name="scheme_network">SCHEME / NETWORK</string>
     <string name="type">TYPE</string>
@@ -24,4 +24,5 @@
     <string name="jyske_bank_hj_rring">Jyske Bank, Hjørring</string>
     <string name="www_jyskebank_dk">www.jyskebank.dk</string>
     <string name="_4589893300">+4589893300</string>
+    <string name="request_history">Request history</string>
 </resources>

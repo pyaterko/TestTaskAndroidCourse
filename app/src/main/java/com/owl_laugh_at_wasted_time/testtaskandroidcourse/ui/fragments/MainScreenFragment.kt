@@ -6,9 +6,13 @@ import android.net.NetworkCapabilities
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.elveum.elementadapter.simpleAdapter
 import com.owl_laugh_at_wasted_time.testtaskandroidcourse.R
+import com.owl_laugh_at_wasted_time.testtaskandroidcourse.databinding.CardItemBinding
 import com.owl_laugh_at_wasted_time.testtaskandroidcourse.databinding.FragmentMainScreenBinding
 import com.owl_laugh_at_wasted_time.testtaskandroidcourse.domain.entity.CardItem
 import com.owl_laugh_at_wasted_time.testtaskandroidcourse.ui.base.BaseFragment
@@ -49,11 +53,7 @@ class MainScreenFragment : BaseFragment(R.layout.fragment_main_screen) {
                             bank_city = data.bank.city
                         )
                         viewModel.add(cardItem)
-                        val directions =
-                            MainScreenFragmentDirections.actionMainScreenFragmentToDetailsFragment(
-                                cardItem
-                            )
-                        findNavController().navigate(directions)
+                        goToDetails(cardItem)
                         isProgressBar(false)
                     }.onFailure {
                         isProgressBar(false)
@@ -66,7 +66,6 @@ class MainScreenFragment : BaseFragment(R.layout.fragment_main_screen) {
                     Toast.makeText(requireContext(), "no internet", Toast.LENGTH_SHORT).show()
                 }
             }
-
         }
     }
 
@@ -95,5 +94,34 @@ class MainScreenFragment : BaseFragment(R.layout.fragment_main_screen) {
         binding.progressBar.visibility = View.GONE
     }
 
-    override fun setData() {}
+    override fun setData() {
+        val adapter = simpleAdapter<CardItem, CardItemBinding> {
+            areItemsSame = { oldItem, newItem -> oldItem.id == newItem.id }
+            bind { item ->
+                tvBin.text = item.bin
+                tvBrand.text = item.brand
+                tvTypes.text = item.type
+            }
+            listeners {
+                root.onClick {
+                    goToDetails(it)
+                }
+            }
+        }
+        binding.rvHistory.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvHistory.adapter = adapter
+        viewModel.getAllData().collectWhileStarted {
+            binding.noDataImageView.isVisible = it.isEmpty()
+            binding.history.isVisible = !it.isEmpty()
+            adapter.submitList(it)
+        }
+    }
+
+    private fun goToDetails(cardItem: CardItem) {
+        val directions =
+            MainScreenFragmentDirections.actionMainScreenFragmentToDetailsFragment(
+                cardItem
+            )
+        findNavController().navigate(directions)
+    }
 }
