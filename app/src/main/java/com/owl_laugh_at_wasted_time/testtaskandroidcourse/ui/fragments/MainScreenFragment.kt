@@ -3,13 +3,21 @@ package com.owl_laugh_at_wasted_time.testtaskandroidcourse.ui.fragments
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.Adapter
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.elveum.elementadapter.SimpleBindingAdapter
 import com.elveum.elementadapter.simpleAdapter
 import com.owl_laugh_at_wasted_time.testtaskandroidcourse.R
 import com.owl_laugh_at_wasted_time.testtaskandroidcourse.databinding.CardItemBinding
@@ -20,6 +28,7 @@ import com.owl_laugh_at_wasted_time.testtaskandroidcourse.ui.base.delegate.viewB
 import com.owl_laugh_at_wasted_time.testtaskandroidcourse.viewmodels.MainScreenViewModel
 
 class MainScreenFragment : BaseFragment(R.layout.fragment_main_screen) {
+    private lateinit var list:List<CardItem>
     private val binding by viewBinding(FragmentMainScreenBinding::bind)
     private val viewModel by viewModels<MainScreenViewModel> { viewModelFactory }
 
@@ -108,13 +117,19 @@ class MainScreenFragment : BaseFragment(R.layout.fragment_main_screen) {
                 }
             }
         }
+        setSearch(adapter)
         binding.rvHistory.layoutManager = LinearLayoutManager(requireContext())
         binding.rvHistory.adapter = adapter
         viewModel.getAllData().collectWhileStarted {
-            binding.noDataImageView.isVisible = it.isEmpty()
-            binding.history.isVisible = !it.isEmpty()
+            list=it
+            isData(it)
             adapter.submitList(it)
         }
+    }
+
+    private fun isData(it: List<CardItem>) {
+        binding.noDataImageView.isVisible = it.isEmpty()
+        binding.history.isVisible = !it.isEmpty()
     }
 
     private fun goToDetails(cardItem: CardItem) {
@@ -123,5 +138,13 @@ class MainScreenFragment : BaseFragment(R.layout.fragment_main_screen) {
                 cardItem
             )
         findNavController().navigate(directions)
+    }
+
+    private fun setSearch(adapter: SimpleBindingAdapter<CardItem>) {
+        binding.etBin.addTextChangedListener {editable->
+          val  currenyList = list.filter { it.bin.contains(editable.toString(), true) }
+            adapter.submitList(currenyList)
+            isData(currenyList)
+        }
     }
 }
