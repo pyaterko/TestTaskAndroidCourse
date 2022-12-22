@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">Test Task Android Course</string>
+    <string name="home">Home</string>
+    <string name="history">History</string>
+    <string name="bin_hint">Введите BIN банковской карты</string>
+    <string name="card_info">Card info</string>
+    <string name="scheme_network">SCHEME / NETWORK</string>
+    <string name="type">TYPE</string>
+    <string name="prepaid">PREPAID</string>
+    <string name="brand">BRAND</string>
+    <string name="card_number">CARD NUMBER</string>
+    <string name="country">COUNTRY</string>
+    <string name="visa">Visa</string>
+    <string name="debit">Debit</string>
+    <string name="visa_dankort">Visa/Dankort</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="denmark">🇩🇰 Denmark</string>
+    <string name="length">LENGTH</string>
+    <string name="luhn">LUHN</string>
+    <string name="_15">15</string>
+    <string name="latitude_56_longitude_10">latitude: %d, longitude: %d</string>
+    <string name="bank">BANK</string>
+    <string name="jyske_bank_hj_rring">Jyske Bank, Hjørring</string>
+    <string name="www_jyskebank_dk">www.jyskebank.dk</string>
+    <string name="_4589893300">+4589893300</string>
 </resources>
